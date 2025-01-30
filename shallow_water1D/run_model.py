@@ -96,25 +96,6 @@ while (time <= tmax):
         +(',{:.3f}'*z_now.size).format(*(z_now+H))
         +(',{:.3f}'*x.size).format(*x))
 
-    """Euler's
-    # Compute gradients
-    for i in range(1,du.size-1):
-        if (u_now[i] < 0):
-            du[i] = u_now[i+1]-u_now[i]
-            dz[i] = z_now[i+1]-z_now[i]
-        else:
-            du[i] = u_now[i]-u_now[i-1]
-            dz[i] = z_now[i]-z_now[i-1]
-
-    du[0] = u_now[0]-0
-    du[-1] = 0.0-u_now[-1]
-    dz[0] = z_now[0]-0.0
-    dz[-1] = 0.0-z_now[-1]
-
-    # Do the time step
-    u_new = u_now+step*(g*dz-u_now*du)
-    z_new = z_now-step*((H+z_now)*du+u_now*dz)
-    """
     # Compute gradients
     du = spatial_difference(u_now)
     dz = spatial_difference(z_now)
