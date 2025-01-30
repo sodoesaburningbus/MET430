@@ -8,8 +8,11 @@ import numpy as np
 # Location of the output file
 fpath = './sw_output.csv'
 
+# Location to save outputs
+sdir = 'images/'
+
 # Number of grid points in the model
-nx = 100
+nx = 500
 
 # Lists to hold the data
 time = []
@@ -18,8 +21,8 @@ z = []
 x =  []
 
 # Read in the output file
-fn = open(fpath)
-for line in fn:
+fn = list(open(fpath))
+for line in fn[1:]:
 
     # Split the data
     dummy = line.split(',')
@@ -29,12 +32,29 @@ for line in fn:
     x.append(dummy[2*nx+1:3*nx+1])
 
 # Convert to numpy arrays
-u = np.array(u)
-z = np.array(z)
-x = np.array(x)
+time = np.array(time, dtype='float')
+u = np.array(u, dtype='float')
+z = np.array(z, dtype='float')
+x = np.array(x, dtype='float')
 
 # Make the plots
-for i in u.shape[0]:
+fs = 14
+fw = 'bold'
+for i in range(0, u.shape[0])[::50]:
 
-    fig, ax = pp.subplots()
-    ax.set_title(f'Time {time:.2f} s', loc='left', ha='left', fontsize=14, fontweight='bold')
+    fig, (ax1, ax2) = pp.subplots(nrows=2, constrained_layout=True)
+    ax1.set_title(f'Time {time[i]:.2f} s', loc='left', ha='left', fontsize=fs, fontweight=fw)
+
+    ax1.plot(x[i,:], z[i,:], color='black')
+    ax1.set_ylabel('Depth (m)', fontsize=fs, fontweight=fw)
+    ax1.grid()
+    ax1.set_ylim(500, 1500)
+
+    ax2.plot(x[i,:], u[i,:], color='black')
+    ax2.set_xlabel('X (m)', fontsize=fs, fontweight=fw)
+    ax2.set_ylabel('U (m/s)', fontsize=fs, fontweight=fw)
+    ax2.grid()
+    ax2.set_ylim(-35, 35)
+
+    pp.savefig(f'{sdir}/frame_{i:04d}.png')
+    pp.close()
