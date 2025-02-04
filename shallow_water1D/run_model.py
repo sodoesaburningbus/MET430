@@ -8,7 +8,7 @@
 spath = './sw_output.csv'
 
 # Grid information
-dx = 100.0 # Grid spacing (meters)
+dx = 10000.0 # Grid spacing (meters)
 nx = 500 # Number of grid points
 
 # Time information
