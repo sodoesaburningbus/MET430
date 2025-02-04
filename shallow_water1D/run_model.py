@@ -8,7 +8,7 @@
 spath = './sw_output.csv'
 
 # Grid information
-dx = 10000.0 # Grid spacing (meters)
+dx = 100.0 # Grid spacing (meters)
 nx = 500 # Number of grid points
 
 # Time information
@@ -65,6 +65,7 @@ fn.write('\n{:.3f}'.format(time)+(',{:.3f}'*u_now.size).format(*u_now)
          +(',{:.3f}'*x.size).format(*x))
 
 # Compute gradients
+# See how we're using upwind for computing the gradient.
 for i in range(1,du.size-1):
     if (u_now[i] < 0):
         du[i] = u_now[i+1]-u_now[i]
@@ -73,12 +74,14 @@ for i in range(1,du.size-1):
         du[i] = u_now[i]-u_now[i-1]
         dz[i] = z_now[i]-z_now[i-1]
 
-
+# Handle the edges (hard wall)
+du[0] = u_now[1]-0.0
+du[-1] = 0.0-u_now[-2]
 dz[0] = z_now[1]-0.0
 dz[-1] = 0.0-z_now[-2]
 
 # Do the time step
-u_new = u_now+step*(g*dz-u_now*du)
+u_new = u_now-step*(g*dz+u_now*du)
 z_new = z_now-step*((H+z_now)*du+u_now*dz)
 
 # Cycle the variables
@@ -101,7 +104,7 @@ while (time <= tmax):
     dz = spatial_difference(z_now)
 
     # Do the time step
-    u_new = u_old-step*(g*dz-u_now*du)
+    u_new = u_old-step*(g*dz+u_now*du)
     z_new = z_old-step*((H+z_now)*du+u_now*dz)
 
     # Do the filters
