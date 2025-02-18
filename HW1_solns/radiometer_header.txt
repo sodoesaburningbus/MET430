@@ -1,0 +1,39 @@
+netcdf radiometer_2025-01-24_00-04-09_lv2 {
+dimensions:
+	t = 510 ;
+	z = 58 ;
+variables:
+	float time(t) ;
+		time:long_name = "Hours since midnight (UTC)" ;
+		time:units = "Hours" ;
+	float height(z) ;
+		height:long_name = "Height above radiometer" ;
+		height:units = "km" ;
+	float PBLH(t) ;
+		PBLH:long_name = "Boundary layer height" ;
+		PBLH:units = "km" ;
+	float TEMP(t, z) ;
+		TEMP:long_name = "Temperature" ;
+		TEMP:units = "K" ;
+		TEMP:missing_value = -999.f ;
+	float RH(t, z) ;
+		RH:long_name = "Relative Humidity" ;
+		RH:units = "%" ;
+		RH:missing_value = -999.f ;
+	float VAPOR(t, z) ;
+		VAPOR:long_name = "Water Vapor Density" ;
+		VAPOR:units = "g/m3" ;
+		VAPOR:missing_value = -999.f ;
+	float LIQUID(t, z) ;
+		LIQUID:long_name = "Liquid Water Density" ;
+		LIQUID:units = "g/m3" ;
+		LIQUID:missing_value = -999.f ;
+
+// global attributes:
+		:description = "Thermodynamic profiles from Valparaiso Radiometer with channel instabilities corrected." ;
+		:date_created = "2025-01-24 23:10 UTC" ;
+		:temp_net = "temp_network_v03.pt" ;
+		:vapor_net = "vapor_network_v03.pt" ;
+		:humidity_net = "rh_network_v03.pt" ;
+		:water_net = "liquid_network_v03.pt" ;
+}
